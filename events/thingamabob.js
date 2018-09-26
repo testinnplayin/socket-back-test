@@ -46,28 +46,28 @@ function deleteThinggy(socket) {
     });
 }
 
-function getThinggies(socket) {
-    console.log('getThinggies triggered ', socket.id);
+// function getThinggies(socket) {
+//     console.log('getThinggies triggered ', socket.id);
 
-    socket.on('GET_THINGGIES', function(data) {
-        Thingamabob
-            .find()
-            .exec()
-            .then(thinggies => {
-                if (!thinggies) {
-                    console.error(`Cannot find thinggies`);
-                    let err = new Error(`Cannot find thinggies`);
-                    socket.emit('GET_ALL_ERROR', err);
-                }
-                console.log('Fetching thinggies');
-                socket.emit('GET_ALL_SUCCESS', thinggies);
-            })
-            .catch(err => {
-                console.error(`Cannot fetch thinggies: ${err}`);
-                socket.emit('GET_ALL_ERROR', err);
-            });
-    });
-}
+//     socket.on('GET_THINGGIES', function(data) {
+//         Thingamabob
+//             .find()
+//             .exec()
+//             .then(thinggies => {
+//                 if (!thinggies) {
+//                     console.error(`Cannot find thinggies`);
+//                     let err = new Error(`Cannot find thinggies`);
+//                     socket.emit('GET_ALL_ERROR', err);
+//                 }
+//                 console.log('Fetching thinggies');
+//                 socket.emit('GET_ALL_SUCCESS', thinggies);
+//             })
+//             .catch(err => {
+//                 console.error(`Cannot fetch thinggies: ${err}`);
+//                 socket.emit('GET_ALL_ERROR', err);
+//             });
+//     });
+// }
 
 function getThinggy(socket) {
     console.log('getThinggy triggered ', socket.id);
@@ -111,7 +111,6 @@ function updateThinggy(socket) {
 module.exports = {
     createThinggy,
     deleteThinggy,
-    getThinggies,
     getThinggy,
     updateThinggy
 };
