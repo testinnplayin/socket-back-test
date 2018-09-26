@@ -26,10 +26,13 @@ const arrOrigins = [
 const {
     createThinggy,
     deleteThinggy,
-    getThinggies,
     getThinggy,
     updateThinggy
 } = require('./events/thingamabob');
+
+const thingamabobRouter = require('./routes/thingamabob-router');
+
+app.use('/thingamabobs', thingamabobRouter);
 
 // NOTE : need to see if this will actually work with websocket stuff since it's not based on http
 const corsOptions = {
