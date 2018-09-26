@@ -23,7 +23,13 @@ const arrOrigins = [
     "*"
 ];
 
-const {createThinggy} = require('./events/thingamabob');
+const {
+    createThinggy,
+    deleteThinggy,
+    getThinggies,
+    getThinggy,
+    updateThinggy
+} = require('./events/thingamabob');
 
 // NOTE : need to see if this will actually work with websocket stuff since it's not based on http
 const corsOptions = {
