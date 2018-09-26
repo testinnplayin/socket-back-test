@@ -45,13 +45,6 @@ const corsOptions = {
     ]
 };
 
-app.use(cors(corsOptions));
-
-
-app.use('*', (req, res) => {
-    res.status(404).json({ message : 'Path not found' });
-});
-
 mongoose
     .connect(dbURL, { useNewUrlParser : true })
     .then(() => {
