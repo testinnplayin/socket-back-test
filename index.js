@@ -2,8 +2,11 @@
 
 const express = require('express');
 const app = express();
+const http = require('http').Server(app);
 
 const mongoose = require('mongoose');
+
+const io = require('socket.io')(http);
 
 const cors = require('cors');
 
@@ -36,6 +39,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+io.on('connection', function(socket) {
+    console.log('client has connected to socket', socket.id);
+    socket.on('disconnect', function() {
+        console.log('client disconnected ', socket.id);
+    });
+});
+
+
 app.use('*', (req, res) => {
     res.status(404).json({ message : 'Path not found' });
 });
@@ -43,7 +54,7 @@ app.use('*', (req, res) => {
 mongoose
     .connect(dbURL, { useNewUrlParser : true })
     .then(() => {
-        app.listen(port, () => {
+        http.listen(port, () => {
             console.log(`App listening on port ${port}`);
         });
     })
