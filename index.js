@@ -23,6 +23,8 @@ const arrOrigins = [
     "*"
 ];
 
+const {createThinggy} = require('./events/thingamabob');
+
 // NOTE : need to see if this will actually work with websocket stuff since it's not based on http
 const corsOptions = {
     origin : arrOrigins,
@@ -39,13 +41,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-io.on('connection', function(socket) {
-    console.log('client has connected to socket', socket.id);
-    socket.on('disconnect', function() {
-        console.log('client disconnected ', socket.id);
-    });
-});
-
 
 app.use('*', (req, res) => {
     res.status(404).json({ message : 'Path not found' });
@@ -59,3 +54,12 @@ mongoose
         });
     })
     .catch(err => console.error(`Error connecting to database: ${err}`));
+
+io.on('connection', function(socket) {
+    console.log('client has connected to socket', socket.id);
+    createThinggy(socket);
+    
+    socket.on('disconnect', function() {
+        console.log('client disconnected ', socket.id);
+    });
+});
