@@ -13,7 +13,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 app.use(morgan('common'));
 
-const dbURL = 'mongodb://127.0.0.1:27017/yuno';
+const dbURL = 'mongodb://127.0.0.1:27017/test';
 const port = '3000';
 
 const arrOrigins = [
