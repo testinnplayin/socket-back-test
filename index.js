@@ -58,7 +58,7 @@ mongoose
     .connect(dbURL, { useNewUrlParser : true })
     .then(() => {
         http.listen(port, () => {
-            console.log(`Socket listening on port ${port}`);
+            console.log(`Socket server listening on port ${port}`);
         });
         // app.listen(port2, () => {
         //     console.log('App listening on port ', port2);

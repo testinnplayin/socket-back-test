@@ -2,9 +2,10 @@
 
 const io = require('socket.io');
 
+const {Dohicky} = require('../src/models/dohicky');
 const {Thingamabob} = require('../src/models/thingamabob');
 
-// horrible code that would have to be refactored
+// horrible code that would have to be refactored if this was an even remotely normal project
 
 function createThinggy(socket) {
     console.log('createThinggy triggered ', socket.id);
@@ -15,6 +16,19 @@ function createThinggy(socket) {
             .then(thinggy => {
                 console.log('Thinggy created ', thinggy);
                 socket.emit('CREATION_SUCCESS', thinggy);
+                let newDohicky = {
+                    is_ok : true,
+                    thingamabob_id : thinggy._id
+                };
+                Dohicky
+                    .create(newDohicky)
+                    .then(nD => {
+                        console.log('Dohicky created ', nD);
+                        socket.emit('D_CREATE_SUCCESS', nD);
+                    })
+                    .catch(err => {
+                        console.error(`Problem creating dohicky: ${err}`);
+                    });
             })
             .catch(err => {
                 console.error(`Problem creating thinggy: ${err}`);
