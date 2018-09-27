@@ -2,37 +2,15 @@
 
 const express = require('express');
 const app = express();
-const http = require('http').Server(app);
-
-const mongoose = require('mongoose');
-
-const io = require('socket.io')(http);
 
 const cors = require('cors');
-
-const morgan = require('morgan');
-app.use(morgan('common'));
-
-const dbURL = 'mongodb://127.0.0.1:27017/test';
-const port = '3000';
-
 const arrOrigins = [
     "http://localhost:8080",
     "https://localhost:8080",
     "http://localhost:8081",
+    "localhost:8080",
     "*"
 ];
-
-const {
-    createThinggy,
-    deleteThinggy,
-    getThinggy,
-    updateThinggy
-} = require('./events/thingamabob');
-
-const thingamabobRouter = require('./routes/thingamabob-router');
-
-app.use('/thingamabobs', thingamabobRouter);
 
 // NOTE : need to see if this will actually work with websocket stuff since it's not based on http
 const corsOptions = {
@@ -48,12 +26,42 @@ const corsOptions = {
     ]
 };
 
+app.use(cors(corsOptions));
+
+const http = require('http').Server(app);
+
+const mongoose = require('mongoose');
+
+const io = require('socket.io')(http);
+
+
+const morgan = require('morgan');
+app.use(morgan('common'));
+
+const dbURL = 'mongodb://127.0.0.1:27017/test';
+const port = '3000';
+const port2 = '3001';
+
+const {
+    createThinggy,
+    deleteThinggy,
+    getThinggy,
+    updateThinggy
+} = require('./events/thingamabob');
+
+const thingamabobRouter = require('./routes/thingamabob-router');
+
+app.use('/thingamabobs', thingamabobRouter);
+
 mongoose
     .connect(dbURL, { useNewUrlParser : true })
     .then(() => {
         http.listen(port, () => {
-            console.log(`App listening on port ${port}`);
+            console.log(`Socket listening on port ${port}`);
         });
+        // app.listen(port2, () => {
+        //     console.log('App listening on port ', port2);
+        // })
     })
     .catch(err => console.error(`Error connecting to database: ${err}`));
 
