@@ -12,10 +12,10 @@ router.get('/', (req, res) => {
         .then(thinggies => {
             if (!thinggies) {
                 console.error(`Cannot find thinggies`);
-                return res.send(404).json({ message : 'Cannot find thinggies' });
+                return res.status(404).json({ message : 'Cannot find thinggies' });
             }
-            console.log('Fetching thinggies');
-            return res.send(200).json({ thingamabobs : thinggies });
+            console.log('Fetching thinggies ', res);
+            return res.status(200).json({ thingamabobs : thinggies });
         })
         .catch(err => res.status(500).send({ message : `Internal server error, cannot fetch thinggies: ${err}`}));
 });
