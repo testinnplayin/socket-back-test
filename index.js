@@ -68,9 +68,10 @@ mongoose
 
 io.on('connection', function(socket) {
     console.log('client has connected to socket', socket.id);
+    console.log('sockets opened ', io.sockets.sockets);
     createThinggy(socket);
     deleteThinggy(socket);
-    
+
     socket.on('disconnect', function() {
         console.log('client disconnected ', socket.id);
     });
