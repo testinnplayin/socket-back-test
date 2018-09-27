@@ -35,9 +35,10 @@ function deleteThinggy(socket) {
                 if (r.n === 0) {
                     console.error(`Cannot find thinggy of id ${data._id} for deletion`);
                     let err = new Error(`Cannot find thinggy of id ${data._id} for deletion`);
-                    socket.emit('DELETE_ERROR', err);
+                    socket.emit('DELETION_ERROR', err);
                 }
-                socket.emit('DELETE_SUCCESS');
+                console.log('successfull deletion of ', data._id);
+                socket.emit('DELETION_SUCCESS', data._id);
             })
             .catch(err => {
                 console.error(`Cannot delete thinggy of id ${data._id}: ${err}`);

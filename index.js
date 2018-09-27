@@ -13,6 +13,7 @@ const arrOrigins = [
 ];
 
 // NOTE : need to see if this will actually work with websocket stuff since it's not based on http
+// UPDATE : if we want to use CORS with socket.io, we'll have to use the io methods and not this module
 const corsOptions = {
     origin : arrOrigins,
     credentials : true,
@@ -68,6 +69,7 @@ mongoose
 io.on('connection', function(socket) {
     console.log('client has connected to socket', socket.id);
     createThinggy(socket);
+    deleteThinggy(socket);
     
     socket.on('disconnect', function() {
         console.log('client disconnected ', socket.id);
