@@ -7,11 +7,7 @@ const dohickySchema = mongoose.Schema({
         type : Boolean,
         default : true
     },
-    thingamabob_id : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'Thingamabob',
-        required : true
-    }
+    thingamabob_id : String
 },
 { collection : 'dohickies' });
 

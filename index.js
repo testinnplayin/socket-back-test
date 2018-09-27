@@ -50,8 +50,10 @@ const {
     updateThinggy
 } = require('./events/thingamabob');
 
+const dohickyRouter = require('./routes/dohicky-router');
 const thingamabobRouter = require('./routes/thingamabob-router');
 
+app.use('/dohickies', dohickyRouter);
 app.use('/thingamabobs', thingamabobRouter);
 
 mongoose
