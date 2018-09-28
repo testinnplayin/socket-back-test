@@ -10,7 +10,7 @@ const {Dohicky} = require('../src/models/dohicky');
 router.get('/', (req, res) => {
     Dohicky
         .find()
-        // .populate({ path : 'thingamabob_id', select : 'awesome_field' })
+        .populate({ path : 'thingamabob_id', select : 'awesome_field' })
         .exec()
         .then(dohickies => {
             console.log('dohickies success ', dohickies)

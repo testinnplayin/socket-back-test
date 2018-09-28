@@ -20,12 +20,24 @@ function createThinggy(socket) {
                 socket.emit('CREATION_SUCCESS', thinggy);
                 let newDohicky = {
                     is_ok : true,
-                    thingamabob_id : thinggy._id
+                    thingamabob_id : thinggy._id,
+                    thingamabob_bp : thinggy
                 };
                 Dohicky
                     .create(newDohicky)
                     .then(nD => {
-                        socket.emit('D_CREATE_SUCCESS', nD);
+                        console.log('Dohicky created ', nD)
+                        Dohicky
+                            .find({ _id : nD._id })
+                            .populate({ path : 'thingamabob_id', select : 'awesome_field' })
+                            .then(dohicky => {
+                                console.log(`Successful populate of new dohicky `, dohicky);
+                                socket.emit('D_CREATE_SUCCESS', dohicky);
+                            })
+                            .catch(err => {
+                                console.error(`Error trying to populate and send dohicky: ${err}`);
+                                socket.emit('D_CREATE_ERROR', err);
+                            })
                     })
                     .catch(err => {
                         console.error(`Problem creating dohicky: ${err}`);
@@ -81,71 +93,7 @@ function deleteThinggy(socket) {
     });
 }
 
-// function getThinggies(socket) {
-//     console.log('getThinggies triggered ', socket.id);
-
-//     socket.on('GET_THINGGIES', function(data) {
-//         Thingamabob
-//             .find()
-//             .exec()
-//             .then(thinggies => {
-//                 if (!thinggies) {
-//                     console.error(`Cannot find thinggies`);
-//                     let err = new Error(`Cannot find thinggies`);
-//                     socket.emit('GET_ALL_ERROR', err);
-//                 }
-//                 console.log('Fetching thinggies');
-//                 socket.emit('GET_ALL_SUCCESS', thinggies);
-//             })
-//             .catch(err => {
-//                 console.error(`Cannot fetch thinggies: ${err}`);
-//                 socket.emit('GET_ALL_ERROR', err);
-//             });
-//     });
-// }
-
-function getThinggy(socket) {
-    console.log('getThinggy triggered ', socket.id);
-
-    socket.on('GET_THINGGY', function(data) {
-        Thingamabob
-            .findById(data._id)
-            .exec()
-            .then(thinggy => {
-                if (!thinggy) {
-                    let err = new Error(`Cannot find thinggy of id ${data._id}`);
-                    console.error(`Cannot find thinggy of id ${data._id}: ${err}`);
-                    socket.emit('GET_THINGGY_ERROR', err);
-                }
-                socket.emit('GET_THINGGY_SUCCESS', thinggy);
-            })
-            .catch(err => {
-                console.error(`Cannot fetch thinggy of id ${data._id}: ${err}`);
-                socket.emit('GET_THINGGY_ERROR', err);
-            });
-    });
-}
-
-function updateThinggy(socket) {
-    console.log('updateThinggy triggered ', socket.id);
-
-    socket.on('UPDATE_THINGGY', function(data) {
-        Thingamabob
-            .findByIdAndUpdate(data._id, { $set : data }, { new : true })
-            .then(thinggy => {
-                console.log(`Thinggy of id ${thinggy._id} updated, new version: ${thinggy}`);
-                socket.emit('UPDATE_SUCCESS', thinggy);
-            })
-            .catch(err => {
-                console.error(`Problem updating thinggy of id ${data._id}: ${err}`);
-                socket.emit('UPDATE_ERROR', err);
-            })
-    });
-}
-
 module.exports = {
     createThinggy,
-    deleteThinggy,
-    getThinggy,
-    updateThinggy
+    deleteThinggy
 };

@@ -46,8 +46,6 @@ const port2 = '3001';
 const {
     createThinggy,
     deleteThinggy,
-    getThinggy,
-    updateThinggy
 } = require('./events/thingamabob');
 
 const dohickyRouter = require('./routes/dohicky-router');
@@ -69,6 +67,7 @@ mongoose
     .catch(err => console.error(`Error connecting to database: ${err}`));
 
 io.on('connection', function(socket) {
+    console.log('connection event hit');
     console.log('client has connected to socket', socket.id);
     console.log('sockets opened ', io.sockets.sockets);
     createThinggy(socket);
