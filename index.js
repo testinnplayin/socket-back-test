@@ -39,7 +39,8 @@ const io = require('socket.io')(http);
 const morgan = require('morgan');
 app.use(morgan('common'));
 
-const dbURL = 'mongodb://127.0.0.1:27017/test';
+const dbURL = 'mongodb://192.168.1.97:27017/yuno';
+// const dbURL = 'mongodb://127.0.0.1:27017/test';
 const port = '3000';
 const port2 = '3001';
 
@@ -47,12 +48,15 @@ const {
     createThinggy,
     deleteThinggy,
 } = require('./events/thingamabob');
+const {getTsvHistories} = require('./events/tsv_value_history');
 
 const dohickyRouter = require('./routes/dohicky-router');
 const thingamabobRouter = require('./routes/thingamabob-router');
+const tsvHistoryRouter = require('./routes/tsv_history-router');
 
 app.use('/dohickies', dohickyRouter);
 app.use('/thingamabobs', thingamabobRouter);
+app.use('/tsvs', tsvHistoryRouter);
 
 mongoose
     .connect(dbURL, { useNewUrlParser : true })
@@ -67,11 +71,12 @@ mongoose
     .catch(err => console.error(`Error connecting to database: ${err}`));
 
 io.on('connection', function(socket) {
-    console.log('connection event hit');
     console.log('client has connected to socket', socket.id);
     console.log('sockets opened ', io.sockets.sockets);
-    createThinggy(socket);
-    deleteThinggy(socket);
+    // createThinggy(socket);
+    // deleteThinggy(socket);
+
+    getTsvHistories(socket);
 
     socket.on('disconnect', function() {
         console.log('client disconnected ', socket.id);
