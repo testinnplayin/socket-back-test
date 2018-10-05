@@ -39,10 +39,8 @@ const io = require('socket.io')(http);
 const morgan = require('morgan');
 app.use(morgan('common'));
 
-const dbURL = 'mongodb://192.168.1.97:27017/yuno';
-// const dbURL = 'mongodb://127.0.0.1:27017/test';
+const dbURL = 'mongodb://127.0.0.1:27017/test';
 const port = '3000';
-const port2 = '3001';
 
 const {
     createThinggy,
@@ -64,19 +62,16 @@ mongoose
         http.listen(port, () => {
             console.log(`Socket server listening on port ${port}`);
         });
-        // app.listen(port2, () => {
-        //     console.log('App listening on port ', port2);
-        // })
     })
     .catch(err => console.error(`Error connecting to database: ${err}`));
 
 io.on('connection', function(socket) {
     console.log('client has connected to socket', socket.id);
     console.log('sockets opened ', io.sockets.sockets);
-    // createThinggy(socket);
-    // deleteThinggy(socket);
+    createThinggy(socket);
+    deleteThinggy(socket);
 
-    getTsvHistories(socket);
+    // getTsvHistories(socket);
 
     socket.on('disconnect', function() {
         console.log('client disconnected ', socket.id);
